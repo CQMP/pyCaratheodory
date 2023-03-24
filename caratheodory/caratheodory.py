@@ -10,6 +10,10 @@ class Caratheodory:
         self._sqrt_one = None
         self._sqrt_two = None
 
+    def sqrtm(self, M):
+        w, v = np.linalg.eig(M)
+        return v @ np.diag(np.sqrt(w)) @ np.linalg.inv(v)
+
     def build(self, mesh, data):
         self._dim = data.shape[1]
         self._mesh = np.zeros(mesh[mesh.imag>0].shape, dtype=np.complex128)
@@ -27,9 +31,9 @@ class Caratheodory:
         for iw in range(self._mesh.shape[0]-1, 0, -1):
             zi = self._mesh[iw]
             Wi = self._Ws[iw]
-            sqrt_one_i = scipy.linalg.sqrtm(eye - Wi @ np.conj(Wi).T)
+            sqrt_one_i = self.sqrtm(eye - Wi @ np.conj(Wi).T)
             sqrt_one_i_inv = np.linalg.inv(sqrt_one_i)
-            sqrt_two_i = scipy.linalg.sqrtm(eye - np.conj(Wi).T @ Wi)
+            sqrt_two_i = self.sqrtm(eye - np.conj(Wi).T @ Wi)
             for jw in range(iw-1, -1, -1):
                 zj = self._mesh[jw]
                 Wj = self._Ws[jw]
@@ -39,8 +43,8 @@ class Caratheodory:
             self._sqrt_one[iw] = sqrt_one_i
             self._sqrt_two[iw] = np.linalg.inv(sqrt_two_i)
 
-        self._sqrt_one[0, :, :]  = scipy.linalg.sqrtm(eye - self._Ws[0] @ np.conj(self._Ws[0]).T);
-        self._sqrt_two[0, :, :]  = np.linalg.inv(scipy.linalg.sqrtm(eye - np.conj(self._Ws[0]).T @ self._Ws[0]));
+        self._sqrt_one[0, :, :]  = self.sqrtm(eye - self._Ws[0] @ np.conj(self._Ws[0]).T);
+        self._sqrt_two[0, :, :]  = np.linalg.inv(self.sqrtm(eye - np.conj(self._Ws[0]).T @ self._Ws[0]));
 
     def evaluate(self, grid):
         if self._dim is None :

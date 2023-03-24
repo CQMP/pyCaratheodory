@@ -1,5 +1,5 @@
 import numpy as np
-import scipy
+from numba import jit
 
 class Caratheodory:
 
@@ -14,6 +14,7 @@ class Caratheodory:
         w, v = np.linalg.eig(M)
         return v @ np.diag(np.sqrt(w)) @ np.linalg.inv(v)
 
+    @jit(forceobj=True)
     def build(self, mesh, data):
         self._dim = data.shape[1]
         self._mesh = np.zeros(mesh[mesh.imag>0].shape, dtype=np.complex128)
@@ -46,6 +47,7 @@ class Caratheodory:
         self._sqrt_one[0, :, :]  = self.sqrtm(eye - self._Ws[0] @ np.conj(self._Ws[0]).T);
         self._sqrt_two[0, :, :]  = np.linalg.inv(self.sqrtm(eye - np.conj(self._Ws[0]).T @ self._Ws[0]));
 
+    @jit(forceobj=True)
     def evaluate(self, grid):
         if self._dim is None :
             raise "Empty continuation data. Please run solve(...) first."

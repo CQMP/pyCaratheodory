@@ -16,7 +16,8 @@ pip install -e .
 
 ## Usage
 
-An example notebook is provided in `examples/example.ipynb`. This demonstrates how to reproduce the results shown in Fig. 2 of the paper.
+An example notebook, located at examples/example.ipynb, demonstrates how to reproduce the results presented in Fig. 2 of the paper.
+
 
 
 

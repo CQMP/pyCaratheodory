@@ -16,7 +16,7 @@ pip install -e .
 
 ## Usage
 
-An example notebook, located at examples/example.ipynb, demonstrates how to reproduce the results presented in Fig. 2 of the paper.
+An example notebook, located at examples/example.ipynb, demonstrates how to reproduce the results presented in Fig. 1 of the paper.
 
 Alternatively, one can use the example script located at examples/example.py to obtain the same results and save them in a text file (example_output.txt) by running the following command:
 ```
